@@ -122,7 +122,9 @@ class Listcreen extends React.Component {
             {/* <Animated.View style={[styles.cardContainer, {opacity: this.state.fadeValue}]}>
             </Animated.View> */}
             <InputButton  
+ ListScreenRealTimeFeedBack
                 onPress={() => console.log(inputedValue)}
+                onPress={() => this.props.navigation.navigate('CurrencyList')}
                 buttonText="USD"
                 editable= {true}
                 keyboardType="numeric"
