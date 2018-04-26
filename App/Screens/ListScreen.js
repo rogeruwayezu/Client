@@ -14,7 +14,9 @@ import styles from './Style/ListStyle'
 
 class Listcreen extends React.Component {
 
-  
+  // componentWillReceiveProps(nextProps) {
+  //   console.log(nextProps)
+  // }
   constructor(props) {
     super(props);
     this.state = {
@@ -27,25 +29,29 @@ class Listcreen extends React.Component {
           Phone: "+34342343",
           Address: "KG 11Av 183",
           Open: "Monday to Frida",
-          Rates: "50 Rwf"
+          Rates: 50,
+          baseCurrency: 'Rwf'
         },
         { Company: "Limitless",
           Email: "boom@gmail.com",
           Phone: "+34342343",
           Address: "KG 11Av 183",
           Open: "Monday to Frida",
-          Rates: "500 Rwf"
+          Rates: 500,
+          baseCurrency: 'Rwf',
         },
         { Company: "Boom",
           Email: "boom@gmail.com",
           Phone: "+34342343",
           Address: "KG 11Av 183",
           Open: "Monday to Frida",
-          Rates: "1000 Rwf"
+          Rates: 1000,
+          baseCurrency: 'Rwf'
         }
       ],
       text: '',
-      countries: []
+      countries: [],
+      inputedValue: 0,
     }
   };
 
@@ -72,7 +78,18 @@ class Listcreen extends React.Component {
   };
 
  
-
+  _handleCurrencyInput = (value) => {
+    const currencyEntered = parseInt(value)
+    if (currencyEntered) { 
+      this.setState({
+        inputedValue: currencyEntered
+      })
+      return
+    }
+    this.setState({
+      inputedValue: 0
+    })
+  }
   // fetchData() {
   //   fetch('https://restcountries.eu/rest/v2/all')
   //     .then(response => response.json())
@@ -96,6 +113,7 @@ class Listcreen extends React.Component {
   oneScreensWorth = 20
 
   render() {
+    const {inputedValue} = this.state
     return (
       <View style={{flex: 1}}>
       <View style={styles.container}>
@@ -104,21 +122,27 @@ class Listcreen extends React.Component {
             {/* <Animated.View style={[styles.cardContainer, {opacity: this.state.fadeValue}]}>
             </Animated.View> */}
             <InputButton  
+ ListScreenRealTimeFeedBack
+                onPress={() => console.log(inputedValue)}
                 onPress={() => this.props.navigation.navigate('CurrencyList')}
                 buttonText="USD"
                 editable= {true}
                 keyboardType="numeric"
+                onChangeText={(value) => this._handleCurrencyInput(value)}
             />
           </View>
         <FlatList
           contentContainerStyle={styles.listContent}
           data={this.state.data}
+          extraData={this.state}
           renderItem={({ item }) => (
             <Card 
               // source={item.image} 
               onPress={() => this.props.navigation.navigate('Details', {...item})}
               text={item.Company} 
-              text2={item.Rates}/>
+              text2={item.Rates}
+              baseCurrency={item.baseCurrency}
+              equivalent={parseInt(item.Rates) * parseInt(inputedValue)}/>
           )}
           numColumns={1}
           keyExtractor={this.keyExtractor}
