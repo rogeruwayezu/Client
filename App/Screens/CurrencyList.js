@@ -34,6 +34,8 @@ class CurrencyList extends Component {
        componentDidMount() {
         this.fetchData();
       }
+
+      
       fetchData() {
         fetch('https://restcountries.eu/rest/v2/all')
           .then((response) => response.json())
@@ -50,6 +52,13 @@ class CurrencyList extends Component {
           .done();
       }
     
+  // fetchData = async () => {
+  //       const response = await fetch("https://restcountries.eu/rest/v2/all")
+  //       const json = await response.json();
+  //       this.setState({data: json});
+       
+  //     };
+
      onRefresh() {
         this.setState({
               refreshing: true,
@@ -77,14 +86,14 @@ renderSeparator = () =>
     // marginLeft: "14%"
   }}
 />
-keyExtractor = (item, index) => index
+keyExtractor = (item, index) => index.toString()
     oneScreensWorth = 30
   render() {
     return (
       <View style={{ flex: 1, marginTop: 25 }}>
         <StatusBar translucent={false} barStyle="default" />
         <FlatList
-          data={this.state.dataSource}
+          data={this.state.data}
           renderItem={({ item }) => (
             <ListItem
               text={item.currencies[0].code}

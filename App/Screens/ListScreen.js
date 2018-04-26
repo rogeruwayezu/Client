@@ -176,4 +176,5 @@ query{
 }
   `;
 
-export default graphql(query)(Listcreen)
+// export default graphql(query)(Listcreen)
+export default Listcreen
