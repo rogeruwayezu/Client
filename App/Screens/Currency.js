@@ -117,7 +117,7 @@ class Listcreen extends React.Component {
         </View>
         <FlatList
           contentContainerStyle={styles.listContent}
-          data={this.props.query.allCurrencies}
+          // data={this.props.query.allCurrencies}
           renderItem={({ item }) => (
             <Card 
               // source={item.image} 
@@ -168,7 +168,9 @@ mutation ($id: ID!, $currency: String!, $rate: String!){
 }
   `;
 
-export default compose(
-  graphql(query,{name: 'query'}),
-  graphql(CurrencyMutation, {name:'CurrencyMutation'})
-)(Listcreen);
+// export default compose(
+//   graphql(query,{name: 'query'}),
+//   graphql(CurrencyMutation, {name:'CurrencyMutation'})
+// )(Listcreen);
+
+export default Listcreen;
