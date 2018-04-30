@@ -105,8 +105,8 @@ class Listcreen extends React.Component {
   setBaseCurrency = async (currency) => {
     const {baseCurrency} = currency
     this.setState({
+      ...initailState,
       baseCurrency: baseCurrency,
-      loading: true
 
     })
     const response = await this.props.client.query(

@@ -32,7 +32,6 @@ class CurrencyList extends Component {
 
     //Luc's code handling dabase filtering
       goBack =(baseCurrency) =>{
-        console.log(baseCurrency)
         const {navigation} = this.props
         navigation.goBack();
         navigation.state.params.setBaseCurrency({baseCurrency: baseCurrency })
@@ -41,7 +40,7 @@ class CurrencyList extends Component {
 
     // end of luc's code
 
-    
+
      onEnd() {
       if(this.state.dataloaded)
       {
