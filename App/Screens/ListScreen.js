@@ -99,7 +99,7 @@ class Listcreen extends React.Component {
         loading: response.data.loading,
       })
     }
-    console.log(response)
+    // console.log(response)
   }
 
   setBaseCurrency = async (currency) => {
@@ -164,7 +164,7 @@ class Listcreen extends React.Component {
           renderItem={({ item }) => (
             <Card 
               // source={item.image} 
-              onPress={() => console.log(item)}
+              onPress={() => this.props.navigation.navigate('Details', {data: this.state.data, currentItem: [item] })}
               text={item.user.companyName} 
               text2={parseInt(item.rates)}
               baseCurrency={item.base}

@@ -5,7 +5,10 @@ import { Container, Header, View, DeckSwiper, Card, CardItem, Thumbnail, Text, L
 
 export default class GridView extends Component {
   
-
+    componentDidMount(){
+      //  const data = this.props.navigation.state.params
+       
+    }
     render() {
       // const data = [{ Company: "GoodLife",
       //     Email: "boom@gmail.com",
@@ -32,29 +35,28 @@ export default class GridView extends Component {
       //     baseCurrency: 'Rwf'
       //   }]
       
-      const data = this.props.navigation.state.params
-      const datado = Object.values(data)
-      const itemArray = datado.splice(-1, 1)
-      for (var i = 0; i < datado.length; i++){
-        if(itemArray.includes(datado[i])){
+      const data = this.props.navigation.state.params["data"]
+      const currentItem = this.props.navigation.state.params["currentItem"]      
+      for (var i = 0; i < data.length; i++){
+        if(currentItem.includes(data[i])){
           continue
         }
-        itemArray.push(datado[i])
+        currentItem.push(data[i])
       }
-      // console.log(itemArray)
+      console.log(currentItem)
      return (
        
       <Container>
       <Header />
       <View>
         <DeckSwiper
-          dataSource={itemArray}
+          dataSource={currentItem}
           renderItem={(item) =>
             <Card style={{ elevation: 3 }}>
               <CardItem>
                 <Left>
                   <Body>
-                    <Text>{item.Company}</Text>
+                    <Text>{item.user.companyName}</Text>
                   </Body>
                 </Left>
               </CardItem>
@@ -66,6 +68,7 @@ export default class GridView extends Component {
             </Card>
           }
         />
+        {/* <Text>Hello</Text> */}
       </View>
     </Container>
         
