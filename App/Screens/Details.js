@@ -33,20 +33,28 @@ export default class GridView extends Component {
       //   }]
       
       const data = this.props.navigation.state.params
-      console.log(data)
+      const datado = Object.values(data)
+      const itemArray = datado.splice(-1, 1)
+      for (var i = 0; i < datado.length; i++){
+        if(itemArray.includes(datado[i])){
+          continue
+        }
+        itemArray.push(datado[i])
+      }
+      // console.log(itemArray)
      return (
        
       <Container>
       <Header />
       <View>
         <DeckSwiper
-          dataSource={[data]}
+          dataSource={itemArray}
           renderItem={(item) =>
             <Card style={{ elevation: 3 }}>
               <CardItem>
                 <Left>
                   <Body>
-                    <Text>{item[0].Company}</Text>
+                    <Text>{item.Company}</Text>
                   </Body>
                 </Left>
               </CardItem>

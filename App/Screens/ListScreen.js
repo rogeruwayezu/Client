@@ -138,7 +138,7 @@ class Listcreen extends React.Component {
           renderItem={({ item }) => (
             <Card 
               // source={item.image} 
-              onPress={() => this.props.navigation.navigate('Details', {...this.state.data})}
+              onPress={() => this.props.navigation.navigate('Details', {...this.state.data, item })}
               text={item.Company} 
               text2={item.Rates}
               baseCurrency={item.baseCurrency}
