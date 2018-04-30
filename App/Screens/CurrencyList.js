@@ -2,6 +2,10 @@ import React, {Component} from 'react'
 import {Text, FlatList, View, StatusBar} from 'react-native'
 import PropTypes from 'prop-types'
 
+//graphcool things
+import { graphql } from 'react-apollo'
+import gql from 'graphql-tag'
+
 import ListItem from '../Components/ListItem'
 // import Currencies from '../Assets/Data/Currencies'
 
@@ -23,7 +27,21 @@ class CurrencyList extends Component {
       this.onRefresh = this.onRefresh.bind(this);
       this.onEnd = this.onEnd.bind(this);
     
+    }
+
+
+    //Luc's code handling dabase filtering
+      goBack =(baseCurrency) =>{
+        console.log(baseCurrency)
+        const {navigation} = this.props
+        navigation.goBack();
+        navigation.state.params.setBaseCurrency({baseCurrency: baseCurrency })
+        //console.log(navigation)
       }
+
+    // end of luc's code
+
+    
      onEnd() {
       if(this.state.dataloaded)
       {
@@ -75,7 +93,7 @@ class CurrencyList extends Component {
           },200);
           this.fetchData();
     
-      }
+    }
 
 renderSeparator = () =>
   <View
@@ -98,7 +116,7 @@ keyExtractor = (item, index) => index.toString()
             <ListItem
               text={item.currencies[0].code}
             //   selected={item === TEMP_CURRENT_CURRENCY}
-              onPress={() => this.props.navigation.navigate('Currency', {...item})}
+              onPress={() =>this.goBack(item.currencies[0].code)}
             />
           )}
           keyExtractor={this.keyExtractor}

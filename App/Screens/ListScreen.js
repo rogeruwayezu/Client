@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types'
-import {graphql, compose} from 'react-apollo'
+
+// apollo things
+import {withApollo, graphql, compose} from 'react-apollo'
 import gql from 'graphql-tag'
 import { StyleSheet, Text, View, Button, TouchableOpacity, FlatList, Image, Animated } from 'react-native';
 import {Header} from 'react-native-elements'
@@ -12,6 +14,13 @@ import InputButton from '../Components/InputButton'
 import styles from './Style/ListStyle'
 
 
+const initailState = {
+  data: [],
+  loading: true,
+  inputedValue: 0,
+  baseCurrency: 'USD'
+}
+
 class Listcreen extends React.Component {
 
   // componentWillReceiveProps(nextProps) {
@@ -19,40 +28,7 @@ class Listcreen extends React.Component {
   // }
   constructor(props) {
     super(props);
-    this.state = {
-      // showModal: false,
-      refreshing: false,
-      dataloaded: false,
-      data:[
-        { Company: "GoodLife",
-          Email: "boom@gmail.com",
-          Phone: "+34342343",
-          Address: "KG 11Av 183",
-          Open: "Monday to Frida",
-          Rates: 50,
-          baseCurrency: 'Rwf'
-        },
-        { Company: "Limitless",
-          Email: "boom@gmail.com",
-          Phone: "+34342343",
-          Address: "KG 11Av 183",
-          Open: "Monday to Frida",
-          Rates: 500,
-          baseCurrency: 'Rwf',
-        },
-        { Company: "Boom",
-          Email: "boom@gmail.com",
-          Phone: "+34342343",
-          Address: "KG 11Av 183",
-          Open: "Monday to Frida",
-          Rates: 1000,
-          baseCurrency: 'Rwf'
-        }
-      ],
-      text: '',
-      countries: [],
-      inputedValue: 0,
-    }
+    this.state = initailState
   };
 
 
@@ -106,7 +82,50 @@ class Listcreen extends React.Component {
   // }
 
 
+// back code written by Luc Dev
+  async componentDidMount() {
+    const base = this.state.baseCurrency
+    const response = await this.props.client.query(
+      {
+        query: fetchAllCurrencies,
+        variables:{
+          base: base,
+        }
+      }
+    )
+    if (response) {
+      this.setState({
+        data: response.data.allCurrencies,
+        loading: response.data.loading,
+      })
+    }
+    console.log(response)
+  }
 
+  setBaseCurrency = async (currency) => {
+    const {baseCurrency} = currency
+    this.setState({
+      baseCurrency: baseCurrency,
+      loading: true
+
+    })
+    const response = await this.props.client.query(
+      {
+        query: fetchAllCurrencies,
+        variables:{
+          base: baseCurrency,
+        }
+      }
+    )
+    if (response) {
+      this.setState({
+        data: response.data.allCurrencies,
+        loading: response.data.loading,
+      })
+    }
+  }
+
+// end of Luc Dev codes
 
   keyExtractor = (item, index) => index.toString()
 
@@ -114,6 +133,13 @@ class Listcreen extends React.Component {
 
   render() {
     const {inputedValue} = this.state
+    if(this.state.loading){
+      return(
+        <View>
+          <Text>Loading</Text>
+        </View>
+      )
+    }
     return (
       <View style={{flex: 1}}>
       <View style={styles.container}>
@@ -122,10 +148,10 @@ class Listcreen extends React.Component {
             {/* <Animated.View style={[styles.cardContainer, {opacity: this.state.fadeValue}]}>
             </Animated.View> */}
             <InputButton  
- ListScreenRealTimeFeedBack
+                ListScreenRealTimeFeedBack
                 onPress={() => console.log(inputedValue)}
-                onPress={() => this.props.navigation.navigate('CurrencyList')}
-                buttonText="USD"
+                onPress={() => this.props.navigation.navigate('CurrencyList', {setBaseCurrency: this.setBaseCurrency})}
+                buttonText={this.state.baseCurrency}
                 editable= {true}
                 keyboardType="numeric"
                 onChangeText={(value) => this._handleCurrencyInput(value)}
@@ -138,11 +164,11 @@ class Listcreen extends React.Component {
           renderItem={({ item }) => (
             <Card 
               // source={item.image} 
-              onPress={() => this.props.navigation.navigate('Details', {...this.state.data})}
-              text={item.Company} 
-              text2={item.Rates}
-              baseCurrency={item.baseCurrency}
-              equivalent={parseInt(item.Rates) * parseInt(inputedValue)}/>
+              onPress={() => console.log(item)}
+              text={item.user.companyName} 
+              text2={parseInt(item.rates)}
+              baseCurrency={item.base}
+              equivalent={parseInt(item.rates) * parseInt(inputedValue)}/>
           )}
           numColumns={1}
           keyExtractor={this.keyExtractor}
@@ -165,16 +191,19 @@ Listcreen.propType={
   }
   
 
-const query = gql`
-query{
-  allInfoBureauses{
-    id
-    companyName
-    email
-    phoneNumber
+const fetchAllCurrencies = gql`
+ query($base: String!){
+    allCurrencies(filter:{base: $base}){
+      id
+      category
+      base
+      rates
+      user{
+        id
+        companyName
+      }
+    }
   }
-}
-  `;
-
-// export default graphql(query)(Listcreen)
-export default Listcreen
+`
+export default withApollo(Listcreen)
+// export default Listcreen

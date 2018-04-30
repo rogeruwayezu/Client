@@ -13,7 +13,7 @@ const ListItem = ({
   visible = true,
   customIcon = null,
   iconBackground,
-}) => (
+  }) => (
   <TouchableHighlight onPress={onPress}>
     <View style={styles.row}>
       <Text style={styles.text}>{text}</Text>
