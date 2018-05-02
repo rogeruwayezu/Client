@@ -56,15 +56,19 @@ export default class GridView extends Component {
               <CardItem>
                 <Left>
                   <Body>
-                    <Text>{item.user.companyName}</Text>
+                    <Text>Company Name: {item.user.companyName}</Text>
+                    <Text>Email:{item.user.companyName}@gmail.com</Text>
+                    <Text>Phone: +2507894949320</Text>
+                    <Text>Address: KG 11Av 183</Text>
+                    <Text>Opening hours: 24/7</Text>
                   </Body>
                 </Left>
               </CardItem>
   
-              <CardItem>
+              {/* <CardItem>
                 <Icon name="heart" style={{ color: '#ED4A6A' }} />
                 <Text>{item.name}</Text>
-              </CardItem>
+              </CardItem> */}
             </Card>
           }
         />
