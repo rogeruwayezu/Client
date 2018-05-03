@@ -18,7 +18,7 @@ const initailState = {
   data: [],
   loading: true,
   inputedValue: 0,
-  baseCurrency: 'USD'
+  baseCurrency: 'EUR'
 }
 
 class Listcreen extends React.Component {

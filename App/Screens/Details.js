@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, Dimensions } from 'react-native';
 import DetailCard from "../Components/DetailCard"
 import { Container, Header, View, DeckSwiper, Card, CardItem, Thumbnail, Text, Left, Body, Icon } from 'native-base';
+
+const marginText = Dimensions.get('window').width /10;
+const marginTitle = Dimensions.get('window').width /10;
+const marginCard = Dimensions.get('window').width /20;
 
 export default class GridView extends Component {
   
@@ -36,6 +40,7 @@ export default class GridView extends Component {
       //   }]
       
       const data = this.props.navigation.state.params["data"]
+      
       const currentItem = this.props.navigation.state.params["currentItem"]      
       for (var i = 0; i < data.length; i++){
         if(currentItem.includes(data[i])){
@@ -43,24 +48,39 @@ export default class GridView extends Component {
         }
         currentItem.push(data[i])
       }
-      console.log(currentItem)
+      // console.log(currentItem)
      return (
        
-      <Container>
-      <Header />
+      <Container style={{margin: marginCard }}>
       <View>
         <DeckSwiper
           dataSource={currentItem}
           renderItem={(item) =>
-            <Card style={{ elevation: 3 }}>
+            <Card style={{ elevation: 3, }}>
               <CardItem>
                 <Left>
                   <Body>
-                    <Text>Company Name: {item.user.companyName}</Text>
-                    <Text>Email:{item.user.companyName}@gmail.com</Text>
-                    <Text>Phone: +2507894949320</Text>
-                    <Text>Address: KG 11Av 183</Text>
-                    <Text>Opening hours: 24/7</Text>
+                    <Text style={{fontWeight: '900', marginBottom: marginTitle, marginTop: marginTitle/2, fontSize: 20, textAlign: 'center'}}>Detail information</Text>
+                    <View style={{flex: 1, flexDirection:"row", marginBottom: marginText}}> 
+                      <Text style={{fontWeight: '900', marginRight: 15}}>Company Name:</Text>
+                      <Text > {item.user.companyName}</Text>
+                    </View>
+                    <View style={{flex: 1, flexDirection:"row", marginBottom: marginText}}> 
+                      <Text style={{fontWeight: '900', marginRight: 15}}>Email:</Text>
+                      <Text> {item.user.companyName}@gmail.com</Text>
+                    </View>
+                    <View style={{flex:1, flexDirection:"row", marginBottom: marginText}}> 
+                      <Text style={{fontWeight: '900', marginRight: 15}}>Phone: </Text>
+                      <Text> +2507894949320</Text>
+                    </View>
+                    <View style={{flex:1, flexDirection:"row", marginBottom: marginText}}> 
+                      <Text style={{fontWeight: '900', marginRight: 15}}>Address:</Text> 
+                      <Text> KG 11Av 183</Text>
+                    </View>
+                    <View style={{flex: 1, flexDirection:"row", marginBottom: marginText}}> 
+                      <Text style={{fontWeight: '900', marginRight: 15}}>Opening hours:</Text>
+                      <Text> 24/7</Text>
+                    </View>
                   </Body>
                 </Left>
               </CardItem>
@@ -72,7 +92,6 @@ export default class GridView extends Component {
             </Card>
           }
         />
-        {/* <Text>Hello</Text> */}
       </View>
     </Container>
         
